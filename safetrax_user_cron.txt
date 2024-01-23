@@ -1,0 +1,4 @@
+*/5 * * * * /home/safetrax/Safetrax/startup/cameraserver start
+* * * * * /home/safetrax/Safetrax/startup/camerastats start
+15 1 * * * /home/safetrax/Safetrax/remove_old_videos 1>>/home/safetrax/Safetrax/remove.log 2>&1
+*/30 * * * * /home/safetrax/Safetrax/offline_stats 1>>/home/safetrax/Safetrax/offline_stats.log 2>&1
