@@ -1,0 +1,9 @@
+/home/safetrax/Safetrax/*.log {
+   weekly
+   dateext
+   copytruncate
+   missingok
+   rotate 4
+   compress
+   notifempty
+}
