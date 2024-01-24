@@ -1,4 +1,5 @@
 #!/bin/bash
+
 ##################################################################
 # Check if the script is run with sudo
 if [ "$EUID" -ne 0 ]; then
@@ -19,35 +20,37 @@ PASSWORD="$1"
 
 ################################ installation ##################################
 
+sudo su
 
 # Update package list
-sudo apt-get update
+apt-get update
 
 
 # Add repository
-sudo add-apt-repository "deb http://archive.ubuntu.com/ubuntu focal main universe"
+add-apt-repository "deb http://archive.ubuntu.com/ubuntu focal main universe"
+add-apt-repository ppa:ondrej/php
 
 # Update package list
-sudo apt update
+apt update
 
 # Install the necessary library
-sudo apt-get install -y libonig5
+apt-get install -y libonig5
 
 # Install Apache2
-sudo apt-get install -y apache2
+apt-get install -y apache2
 
 # Install PHP 7.2 and required extensions
-sudo apt-get install -y php7.2 libapache2-mod-php7.2 php7.2-gd php7.2-mbstring php7.2-sqlite3 curl
+apt-get install -y php7.2 libapache2-mod-php7.2 php7.2-gd php7.2-mbstring php7.2-sqlite3 curl
 
 # Install SQLite3
-sudo apt-get install -y sqlite3
+apt-get install -y sqlite3
 
 # Additional steps for configuring PHP (if needed)
 # For example, to install PHP on Ubuntu based on the provided link:
- sudo apt-get install -y php7.2
+apt-get install -y php7.2
 
 # Restart Apache to apply changes
-sudo systemctl restart apache2
+systemctl restart apache2
 
 
 update-rc.d apache2 enable
@@ -59,13 +62,13 @@ update-rc.d apache2 enable
 PASSWORD="mtap@123"
 
 # Create user
-sudo useradd -m -s /bin/bash safetrax
+useradd -m -s /bin/bash safetrax
 
 # Set password for the user
 echo "safetrax:$PASSWORD" | sudo chpasswd
 
 # Add user to the sudo group
-sudo usermod -aG sudo safetrax
+usermod -aG sudo safetrax
 
 echo "User safetrax created with password $PASSWORD and sudo access."
 
@@ -89,6 +92,9 @@ tar -xvzf gpsvideogallery.tgz
 
 mv deployment/* /home/safetrax/Safetrax
 chown -R safetrax. Safetrax
+
+chown -R safetrax. gpsvideogallery/videos
+mv gpsvideogallery /var/www/html
 
 cd /home/safetrax/Safetrax
 bash assign_permission
@@ -119,8 +125,6 @@ get_camera_info() {
     if validate_ip "$ip"; then
         echo "$ip,$cab" >> cameras.txt
         echo "Camera information added to cameras.txt"
-    else
-        echo "Invalid IP address format. Please try again."
     fi
 }
 
@@ -138,5 +142,53 @@ done
 ########################################################## prepare cameras ####################################################
 bash prepare_cameras
 
+################################# front end ###########################################
+cd /home/safetrax/Safetrax
+ln -s /var/www/html/gpsvideogallery/videos videos
 
 
+##################################### Adding cron jobs for safetrax user ###############################
+(crontab -l ; echo "*/5 * * * * /home/safetrax/Safetrax/startup/cameraserver start") | crontab -
+(crontab -l ; echo "* * * * * /home/safetrax/Safetrax/startup/camerastats start") | crontab -
+(crontab -l ; echo "15 1 * * * /home/safetrax/Safetrax/remove_old_videos 1>>/home/safetrax/Safetrax/remove.log 2>&1") | crontab -
+(crontab -l ; echo "*/30 * * * * /home/safetrax/Safetrax/offline_stats 1>>/home/safetrax/Safetrax/offline_stats.log 2>&1") | crontab -
+
+############################################################### exit safetrax #########################
+exit 
+
+
+######################################## now you are sudo user #############################
+
+######################################## cron job for root user #######################
+(crontab -l ; echo "* * * * * cp /home/safetrax/Safetrax/db/camera.db /var/www/html/gpsvideogallery/db/camera.db") | crontab -
+(crontab -l ; echo "* * * * * cp /home/safetrax/Safetrax/db/camera_videos.db /var/www/html/gpsvideogallery/db/camera_videos.db") | crontab -
+
+
+############################## editing apache file ##################################
+# Configuration to add
+CONFIGURATION="
+DocumentRoot /var/www/html/gpsvideogallery
+<Directory /var/www/html/gpsvideogallery>
+    Options Indexes FollowSymLinks
+    AllowOverride None
+    Order allow,deny
+    Allow from all
+    DirectoryIndex index.php
+</Directory>
+"
+
+# Add configuration to the 000-default.conf file
+echo "$CONFIGURATION" | sudo tee -a /etc/apache2/sites-enabled/000-default.conf > /dev/null
+
+
+
+###################################### add log rotate #################################
+mv safetrax /etc/logrotate.d/
+
+
+####################################### Restart apache #############################
+service apache2 restart
+
+
+####################################### to remove unnecessary files
+./finish
