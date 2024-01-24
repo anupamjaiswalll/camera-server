@@ -13,6 +13,7 @@ fi
 # Update package list
 apt-get update
 
+apt-get install -y software-properties-common
 
 # Add repository
 add-apt-repository "deb http://archive.ubuntu.com/ubuntu focal main universe"
