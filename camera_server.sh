@@ -10,9 +10,6 @@ fi
 
 
 ################################ installation ##################################
-
-sudo su
-
 # Update package list
 apt-get update
 
