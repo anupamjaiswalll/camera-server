@@ -1,20 +1,11 @@
 #!/bin/bash
 
 ##################################################################
-# Check if the script is run with sudo
+# Check if the script is run with sudo or as a root user
 if [ "$EUID" -ne 0 ]; then
     echo "Please run this script with sudo."
     exit 1
 fi
-
-# Check if a password argument is provided
-if [ $# -eq 0 ]; then
-    echo "Usage: $0 <password>"
-    exit 1
-fi
-
-# Set the provided password
-PASSWORD="$1"
 
 
 
