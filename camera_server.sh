@@ -68,7 +68,7 @@ chmod 777 setup_safetrax.sh
 mv setup_safetrax.sh /home/safetrax/
 
 ###To run this script automatically after logging in, you can add it to the .bashrc file for the safetrax user:
-echo "/path/to/setup_safetrax.sh" >> /home/safetrax/.bashrc
+echo "/home/safetrax/setup_safetrax.sh" >> /home/safetrax/.bashrc
 
 ####################################################### login as safetrax ########################################
 su - safetrax
