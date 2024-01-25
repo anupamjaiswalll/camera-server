@@ -88,6 +88,8 @@ sed -i '/\/home\/safetrax\/setup_safetrax.sh/d' /home/safetrax/.bashrc
 (crontab -l ; echo "* * * * * cp /home/safetrax/Safetrax/db/camera.db /var/www/html/gpsvideogallery/db/camera.db") | crontab -
 (crontab -l ; echo "* * * * * cp /home/safetrax/Safetrax/db/camera_videos.db /var/www/html/gpsvideogallery/db/camera_videos.db") | crontab -
 
+echo "cron job added " 
+crontab -l
 
 ############################## editing apache file ##################################
 # Configuration to add
@@ -106,8 +108,12 @@ DocumentRoot /var/www/html/gpsvideogallery
 echo "$CONFIGURATION" | sudo tee -a /etc/apache2/sites-enabled/000-default.conf > /dev/null
 
 
+#################################### log in as safetrax user ################################################
+su safetrax
+
 
 ###################################### add log rotate #################################
+cd /home/safetrax/Safetrax/
 mv safetrax /etc/logrotate.d/
 
 
