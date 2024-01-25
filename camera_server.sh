@@ -24,7 +24,7 @@ apt update
 
 # Install the necessary library
 apt-get install -y libonig5
-
+apt-get install -y cron
 # Install Apache2
 apt-get install -y apache2
 
