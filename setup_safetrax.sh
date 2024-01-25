@@ -75,4 +75,4 @@ ln -s /var/www/html/gpsvideogallery/videos videos
 
 
 ############################################################### exit safetrax #########################
-exit 
+#exit
