@@ -116,4 +116,4 @@ service apache2 restart
 
 
 ####################################### to remove unnecessary files
-./finish
+#./finish
