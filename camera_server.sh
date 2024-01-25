@@ -79,6 +79,10 @@ su - safetrax
 
 ######################################## now you are sudo user #############################
 
+
+######################################### remove startup script from bash ########################################
+sed -i '/\/home\/safetrax\/setup_safetrax.sh/d' /home/safetrax/.bashrc
+
 ######################################## cron job for root user #######################
 (crontab -l ; echo "* * * * * cp /home/safetrax/Safetrax/db/camera.db /var/www/html/gpsvideogallery/db/camera.db") | crontab -
 (crontab -l ; echo "* * * * * cp /home/safetrax/Safetrax/db/camera_videos.db /var/www/html/gpsvideogallery/db/camera_videos.db") | crontab -
