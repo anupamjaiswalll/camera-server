@@ -13,7 +13,7 @@ mv deployment/* /home/safetrax/Safetrax
 chown -R safetrax. Safetrax
 
 chown -R safetrax. gpsvideogallery/videos
-mv gpsvideogallery /var/www/html
+sudo mv gpsvideogallery /var/www/html
 
 cd /home/safetrax/Safetrax
 bash assign_permission
