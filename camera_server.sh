@@ -14,6 +14,7 @@ fi
 apt-get update
 
 apt-get install -y software-properties-common
+apt-get install sudo
 
 # Add repository
 add-apt-repository "deb http://archive.ubuntu.com/ubuntu focal main universe"
@@ -23,7 +24,7 @@ add-apt-repository ppa:ondrej/php
 apt update
 
 # Install the necessary library
-apt-get install -y libonig5
+apt-get install -y libonig5 
 apt-get install -y cron
 # Install Apache2
 apt-get install -y apache2
