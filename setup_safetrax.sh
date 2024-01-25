@@ -72,6 +72,8 @@ ln -s /var/www/html/gpsvideogallery/videos videos
 (crontab -l ; echo "15 1 * * * /home/safetrax/Safetrax/remove_old_videos 1>>/home/safetrax/Safetrax/remove.log 2>&1") | crontab -
 (crontab -l ; echo "*/30 * * * * /home/safetrax/Safetrax/offline_stats 1>>/home/safetrax/Safetrax/offline_stats.log 2>&1") | crontab -
 
+echo "cron job added " 
+crontab -l
 
 
 ############################################################### exit safetrax #########################
