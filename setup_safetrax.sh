@@ -65,7 +65,6 @@ bash prepare_cameras
 cd /home/safetrax/Safetrax
 ln -s /var/www/html/gpsvideogallery/videos videos
 
-
 ##################################### Adding cron jobs for safetrax user ###############################
 (crontab -l ; echo "*/5 * * * * /home/safetrax/Safetrax/startup/cameraserver start") | crontab -
 (crontab -l ; echo "* * * * * /home/safetrax/Safetrax/startup/camerastats start") | crontab -
